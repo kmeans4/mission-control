@@ -1,0 +1,64 @@
+{
+  "tasks": [
+    {
+      "id": "p1",
+      "title": "Setup Caldigit TS3 Plus docking station",
+      "description": "Configure for MacBook and monitors",
+      "status": "todo",
+      "priority": "high",
+      "category": "desk-setup",
+      "createdAt": "2026-02-02T17:08:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "p2",
+      "title": "Connect Mac mini to TS3 Plus via ethernet",
+      "description": "Improve internet speed and workflow integration for Sam",
+      "status": "todo",
+      "priority": "medium",
+      "category": "desk-setup",
+      "createdAt": "2026-02-02T17:08:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "p3",
+      "title": "Measure right side desk space for monitor",
+      "description": "Determine max monitor size for Mac mini full setup",
+      "status": "todo",
+      "priority": "high",
+      "category": "desk-setup",
+      "createdAt": "2026-02-02T17:08:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "p4",
+      "title": "Optimize Keychron K10 HE keyboard",
+      "description": "Use Keychron Launcher to set up shortcuts and profiles",
+      "status": "todo",
+      "priority": "medium",
+      "category": "peripherals",
+      "createdAt": "2026-02-02T17:08:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "p5",
+      "title": "Optimize Keychron M6 mouse",
+      "description": "Configure buttons and DPI profiles in Keychron Launcher",
+      "status": "todo",
+      "priority": "medium",
+      "category": "peripherals",
+      "createdAt": "2026-02-02T17:08:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "p6",
+      "title": "Evaluate shared KB/mouse setup between MacBook & Mac mini",
+      "description": "Research KVM switch or USB switching solution for single keyboard/mouse",
+      "status": "todo",
+      "priority": "low",
+      "category": "desk-setup",
+      "createdAt": "2026-02-02T17:08:00.000Z",
+      "completedAt": null
+    }
+  ]
+}

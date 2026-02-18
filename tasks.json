@@ -1,0 +1,140 @@
+{
+  "tasks": [
+    {
+      "id": "2",
+      "title": "Research Buildern competitor features",
+      "description": "Document all Buildern features for ProjectTrackr differentiation",
+      "status": "done",
+      "priority": "high",
+      "project": "projecttrackr",
+      "assignees": ["Sam"],
+      "dueDate": "2026-01-30",
+      "createdAt": "2026-02-01T14:00:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "3",
+      "title": "Design ProjectTrackr database schema",
+      "description": "Plan data models for bids, projects, contractors",
+      "status": "in_progress",
+      "priority": "high",
+      "project": "projecttrackr",
+      "assignees": ["Sam", "Quinn"],
+      "dueDate": "2026-02-04",
+      "createdAt": "2026-02-02T10:00:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "4",
+      "title": "Set up Mission Control dashboard",
+      "description": "Build task tracking system for better project visibility",
+      "status": "done",
+      "priority": "high",
+      "project": "general",
+      "assignees": ["Sam"],
+      "dueDate": "2026-02-02",
+      "createdAt": "2026-02-02T16:00:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "5",
+      "title": "Configure subagent system for coding",
+      "description": "Set up Dex (nomic-embed-text local) and Quinn (Qwen cloud) for ProjectTrackr development",
+      "status": "done",
+      "priority": "high",
+      "project": "general",
+      "assignees": ["Sam"],
+      "dueDate": "2026-02-04",
+      "createdAt": "2026-02-04T15:00:00.000Z",
+      "comments": [
+        {
+          "author": "Sam",
+          "text": "Updated config: Dex now uses nomic-embed-text:latest (274MB) instead of DeepSeek V2 (8.9GB). Gateway restarted with contextPruning config. All files updated (TOOLS.md, AGENTS.md, mission-control/tasks.json, MEMORY.md, heartbeat-state.json).",
+          "time": "2026-02-11T18:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Build ProjectTrackr MVP - Phase 1: Win the Job",
+      "description": "Lead management, estimates, proposals",
+      "status": "in_progress",
+      "priority": "high",
+      "project": "projecttrackr",
+      "assignees": ["Sam", "Dex", "Quinn"],
+      "dueDate": "2026-02-28",
+      "createdAt": "2026-02-04T16:00:00.000Z",
+      "comments": [
+        {
+          "author": "Sam",
+          "text": "Spawned Dex to implement 10 critical MVP features: Invoice detail, Real tasks, Lead→Project conversion, Settings, Reports, Calendar, PDF exports, Contracts, Project detail tabs. In progress...",
+          "time": "2026-02-04T14:30:00.000Z"
+        }
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "agent": "Sam",
+      "action": "removed task",
+      "target": "Migrate CashedBets from Bubble to full code",
+      "time": "Just now"
+    },
+    {
+      "agent": "Sam",
+      "action": "moved to In Progress",
+      "target": "Design ProjectTrackr database schema",
+      "time": "Just now"
+    },
+    {
+      "agent": "Sam",
+      "action": "completed",
+      "target": "Configure subagent system for coding",
+      "time": "Just now"
+    },
+    {
+      "agent": "Sam",
+      "action": "completed",
+      "target": "Research Buildern competitor features",
+      "time": "2 hours ago"
+    },
+    {
+      "agent": "Sam",
+      "action": "updated config",
+      "target": "Gateway restart with nomic-embed-text:latest (274MB) as local model",
+      "time": "Just now"
+    },
+    {
+      "agent": "Sam",
+      "action": "replaced",
+      "target": "DeepSeek V2 (8.9GB) with nomic-embed-text (274MB) to fix Mac mini crashes",
+      "time": "Just now"
+    }
+  ],
+  "team": [
+    {
+      "id": "sam",
+      "name": "Sam",
+      "role": "Lead Assistant",
+      "model": "Kimi K2",
+      "status": "active",
+      "specialties": ["Orchestration", "Planning", "Coordination", "Context Management"]
+    },
+    {
+      "id": "dex",
+      "name": "Dex",
+      "role": "Code Implementer",
+      "model": "nomic-embed-text:latest (Local Ollama, 274MB)",
+      "status": "active",
+      "specialties": ["CRUD operations", "UI components", "Utility functions", "Quick implementation"]
+    },
+    {
+      "id": "quinn",
+      "name": "Quinn",
+      "role": "Code Architect & Reviewer",
+      "model": "Qwen 3 Coder Next (Ollama Cloud)",
+      "status": "active",
+      "specialties": ["Architecture design", "Code review", "Bug fixes", "Complex features", "Optimization"]
+    }
+  ]
+}

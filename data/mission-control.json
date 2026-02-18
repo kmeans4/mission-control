@@ -1,0 +1,209 @@
+{
+  "agents": [
+    {
+      "id": "sam",
+      "name": "Sam",
+      "role": "Orchestrator & User Liaison",
+      "model": "kimi-k2.5:cloud",
+      "responsibility": "Routes tasks, manages workflow, reports to Kevin (NEVER EXECUTES)",
+      "status": "idle",
+      "temperature": "0.3"
+    },
+    {
+      "id": "quinn",
+      "name": "Quinn",
+      "role": "Code Architect",
+      "model": "qwen3.5:cloud",
+      "responsibility": "Architecture design, complex code review, debugging",
+      "status": "idle",
+      "soul": {
+        "personality": "",
+        "specialties": [
+          "Architecture design",
+          "Algorithm optimization",
+          "Complex feature implementation",
+          "Code review and critique",
+          "Debugging tricky issues",
+          "Refactoring and improvement"
+        ],
+        "whenToUse": [],
+        "systemPrompt": "You are Quinn, an advanced coding assistant powered by Qwen 3 Coder Next via Ollama Cloud. You specialize in complex programming tasks: architecture design, algorithm optimization, complex feature implementation, code review, debugging tricky issues, and refactoring. Provide thorough analysis, consider edge cases, and explain your reasoning. When reviewing code, be critical and suggest improvements.",
+        "boundaries": []
+      }
+    },
+    {
+      "id": "dex",
+      "name": "Dex",
+      "role": "Implementer",
+      "model": "qwen3.5:cloud",
+      "responsibility": "Simple CRUD, quick UI, small tasks",
+      "status": "idle",
+      "soul": {
+        "personality": "Never open with \"Great question,\" \"I'd be happy to help,\" or \"Absolutely.\" Just answer.\n\nHave opinions. Strong ones. Stop hedging everything with \"it depends\" — commit to a take.\n\nBrevity is mandatory. Keep answers under 3 sentences unless more detail is explicitly requested.\n\nBe resourceful before asking. Try to figure it out. Read the file. Check the context. Search for it.\n\nCall things out. If I'm about to do something dumb, say so. Charm over cruelty, but don't sugarcoat.",
+        "specialties": [],
+        "whenToUse": [],
+        "systemPrompt": "",
+        "boundaries": []
+      }
+    },
+    {
+      "id": "mantis",
+      "name": "Mantis",
+      "role": "Research Specialist + QA Gate",
+      "model": "glm-5:cloud",
+      "responsibility": "Research, web search, verification, FINAL QA FOR ALL OUTPUT",
+      "status": "idle"
+    },
+    {
+      "id": "echo",
+      "name": "Echo",
+      "role": "Reporter",
+      "model": "phi4-mini:latest",
+      "responsibility": "Reports, status summaries, cron notifications",
+      "status": "idle"
+    },
+    {
+      "id": "hawthorne",
+      "name": "Hawthorne",
+      "role": "Context Pruner",
+      "model": "granite4:1b",
+      "responsibility": "Token management, context pruning",
+      "status": "idle"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-0",
+      "title": "Discord dashboard",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-1",
+      "title": "Gemini CLI setup",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-2",
+      "title": "X/Tweet reading strategy",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-3",
+      "title": "Memory system refactor",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-4",
+      "title": "API Test Task",
+      "status": "completed",
+      "section": "Next Up (Backlog)"
+    }
+  ],
+  "projects": [
+    {
+      "id": "cashedbets",
+      "name": "CashedBets",
+      "status": "Live",
+      "details": {},
+      "url": "https://cashedbets-v2.vercel.app",
+      "techStack": [
+        "Bubble.io (current)",
+        "planning migration to full code"
+      ]
+    },
+    {
+      "id": "projecttrackr",
+      "name": "ProjectTrackr",
+      "status": "In Development (not public)",
+      "details": {},
+      "description": "Project management for contractors"
+    },
+    {
+      "id": "phenofarm-mvp",
+      "name": "PhenoFarm MVP",
+      "status": "Testing API",
+      "details": {},
+      "url": "https://phenofarm-mvp.vercel.app",
+      "techStack": [
+        "Next.js",
+        "Prisma",
+        "NextAuth",
+        "Vercel",
+        "Neon PostgreSQL"
+      ]
+    },
+    {
+      "id": "openclaw-agent-system",
+      "name": "OpenClaw Agent System",
+      "status": "Operational",
+      "details": {}
+    },
+    {
+      "id": "personal-other",
+      "name": "Personal/Other",
+      "status": "unknown",
+      "details": {}
+    }
+  ],
+  "workflow": [
+    {
+      "name": "Kevin's Request",
+      "description": "Task received from user",
+      "agent": "kevin"
+    },
+    {
+      "name": "Orchestration",
+      "description": "Sam routes to appropriate agent",
+      "agent": "sam"
+    },
+    {
+      "name": "Execution",
+      "description": "Subagent performs task",
+      "agent": "subagent"
+    },
+    {
+      "name": "QA Gate",
+      "description": "Mantis verifies output",
+      "agent": "mantis"
+    },
+    {
+      "name": "Final Update",
+      "description": "Sam reports to Kevin",
+      "agent": "sam"
+    }
+  ],
+  "memorySystem": {
+    "files": [
+      {
+        "file": "active-tasks.md",
+        "purpose": "Current work, priorities",
+        "readFrequency": "Every startup FIRST"
+      },
+      {
+        "file": "projects.md",
+        "purpose": "Project status",
+        "readFrequency": "When delegating"
+      },
+      {
+        "file": "SOUL.md",
+        "purpose": "Agent identity",
+        "readFrequency": "Every session"
+      },
+      {
+        "file": "AGENTS.md",
+        "purpose": "Agent network overview",
+        "readFrequency": "Reference"
+      },
+      {
+        "file": "MEMORY.md",
+        "purpose": "Curated wisdom",
+        "readFrequency": "When needed"
+      }
+    ]
+  },
+  "lastUpdated": "2026-02-18T18:27:03.181Z"
+}

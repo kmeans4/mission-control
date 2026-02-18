@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Cards Dashboard</title>
+  <link rel="stylesheet" href="agent-cards.css">
+</head>
+<body>
+  <div class="dashboard">
+    <header class="dashboard-header">
+      <h1>🧠 Agent Fleet Dashboard</h1>
+      <div class="global-status">
+        <span class="status-dot online"></span>
+        <span>2 Online</span>
+        <span class="status-dot idle"></span>
+        <span>2 Idle</span>
+        <span class="status-dot offline"></span>
+        <span>2 Offline</span>
+      </div>
+    </header>
+
+    <main class="agent-grid">
+      <!-- Sam - Orchestrator -->
+      <article class="agent-card" data-agent="sam" data-status="online">
+        <div class="card-header">
+          <span class="agent-emoji">🧠</span>
+          <span class="status-indicator online pulse"></span>
+        </div>
+        <h2 class="agent-name">Sam</h2>
+        <span class="agent-role">Orchestrator</span>
+        <div class="agent-model">
+          <code>ollama/kimi-k2.5:cloud</code>
+        </div>
+        <div class="token-preview">
+          <div class="token-bar">
+            <div class="token-fill" style="width: 45%"></div>
+          </div>
+          <span class="token-label">45K today</span>
+        </div>
+      </article>
+
+      <!-- Quinn - Code Architect -->
+      <article class="agent-card" data-agent="quinn" data-status="online">
+        <div class="card-header">
+          <span class="agent-emoji">🦎</span>
+          <span class="status-indicator online pulse"></span>
+        </div>
+        <h2 class="agent-name">Quinn</h2>
+        <span class="agent-role">Code Architect</span>
+        <div class="agent-model">
+          <code>ollama/qwen3.5:cloud</code>
+        </div>
+        <div class="token-preview">
+          <div class="token-bar">
+            <div class="token-fill" style="width: 62%"></div>
+          </div>
+          <span class="token-label">62K today</span>
+        </div>
+      </article>
+
+      <!-- Dex - Implementer -->
+      <article class="agent-card" data-agent="dex" data-status="idle">
+        <div class="card-header">
+          <span class="agent-emoji">🎯</span>
+          <span class="status-indicator idle"></span>
+        </div>
+        <h2 class="agent-name">Dex</h2>
+        <span class="agent-role">Implementer</span>
+        <div class="agent-model">
+          <code>ollama/qwen3.5:cloud</code>
+        </div>
+        <div class="token-preview">
+          <div class="token-bar">
+            <div class="token-fill" style="width: 38%"></div>
+          </div>
+          <span class="token-label">38K today</span>
+        </div>
+      </article>
+
+      <!-- Mantis - Research/QA -->
+      <article class="agent-card" data-agent="mantis" data-status="offline">
+        <div class="card-header">
+          <span class="agent-emoji">🪲</span>
+          <span class="status-indicator offline"></span>
+        </div>
+        <h2 class="agent-name">Mantis</h2>
+        <span class="agent-role">Research / QA</span>
+        <div class="agent-model">
+          <code>ollama/glm-5:cloud</code>
+        </div>
+        <div class="token-preview">
+          <div class="token-bar">
+            <div class="token-fill" style="width: 0%"></div>
+          </div>
+          <span class="token-label">Offline</span>
+        </div>
+      </article>
+
+      <!-- Echo - Reporter -->
+      <article class="agent-card offline" data-agent="echo" data-status="offline">
+        <div class="card-header">
+          <span class="agent-emoji">🔊</span>
+          <span class="status-indicator offline"></span>
+        </div>
+        <h2 class="agent-name">Echo</h2>
+        <span class="agent-role">Reporter</span>
+        <div class="agent-model">
+          <code>ollama/phi4-mini:latest</code>
+        </div>
+        <div class="token-preview">
+          <div class="token-bar">
+            <div class="token-fill" style="width: 0%"></div>
+          </div>
+          <span class="token-label">Offline</span>
+        </div>
+      </article>
+
+      <!-- Hawthorne - Context Pruner -->
+      <article class="agent-card" data-agent="hawthorne" data-status="idle">
+        <div class="card-header">
+          <span class="agent-emoji">🦅</span>
+          <span class="status-indicator idle"></span>
+        </div>
+        <h2 class="agent-name">Hawthorne</h2>
+        <span class="agent-role">Context Pruner</span>
+        <div class="agent-model">
+          <code>ollama/granite4:1b</code>
+        </div>
+        <div class="token-preview">
+          <div class="token-bar">
+            <div class="token-fill" style="width: 12%"></div>
+          </div>
+          <span class="token-label">12K today</span>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <!-- Agent Modal -->
+  <div id="agent-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div class="modal-header">
+        <span class="modal-emoji" id="modal-emoji">🧠</span>
+        <h2 id="modal-name">Sam</h2>
+        <span class="modal-role" id="modal-role">Orchestrator</span>
+        <span class="modal-status" id="modal-status">🟢 Online</span>
+      </div>
+      
+      <div class="modal-body">
+        <section class="bio-section">
+          <h3>📝 Bio</h3>
+          <p id="modal-bio">The central coordinator. Sam manages task delegation, session context, and inter-agent communication. Keeps the fleet synchronized.</p>
+        </section>
+
+        <section class="skills-section">
+          <h3>🎯 Skills</h3>
+          <div class="skills-cloud" id="modal-skills">
+            <span class="skill-tag">Task Orchestration</span>
+            <span class="skill-tag">Context Management</span>
+            <span class="skill-tag">Agent Coordination</span>
+          </div>
+        </section>
+
+        <section class="tokens-section">
+          <h3>📊 Token Usage</h3>
+          <div class="token-usage">
+            <div class="usage-row">
+              <span>Today</span>
+              <div class="usage-bar">
+                <div class="usage-fill" id="token-today" style="width: 45%"></div>
+              </div>
+              <span id="token-today-val">45K</span>
+            </div>
+            <div class="usage-row">
+              <span>This Week</span>
+              <div class="usage-bar">
+                <div class="usage-fill" id="token-week" style="width: 67%"></div>
+              </div>
+              <span id="token-week-val">672K</span>
+            </div>
+            <div class="usage-row">
+              <span>Total</span>
+              <div class="usage-bar">
+                <div class="usage-fill total" id="token-total" style="width: 82%"></div>
+              </div>
+              <span id="token-total-val">8.2M</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="actions-section">
+          <h3>⚡ Quick Actions</h3>
+          <div class="action-buttons">
+            <button class="spawn-btn" data-action="spawn-task">📋 Spawn Task</button>
+            <button class="spawn-btn" data-action="spawn-subagent">👥 Spawn Subagent</button>
+            <button class="spawn-btn" data-action="send-message">💬 Send Message</button>
+            <button class="spawn-btn secondary" data-action="refresh-status">🔄 Refresh Status</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="agent-cards.js"></script>
+</body>
+</html>
