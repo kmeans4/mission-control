@@ -19,6 +19,7 @@
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "ws": "^8.19.0",
     "yaml": "^2.6.0"
   },
   "devDependencies": {
@@ -31,5 +32,18 @@
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"
-  }
+  },
+  "main": "data-layer-server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmeans4/mission-control.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kmeans4/mission-control/issues"
+  },
+  "homepage": "https://github.com/kmeans4/mission-control#readme"
 }
