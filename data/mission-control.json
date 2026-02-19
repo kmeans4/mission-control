@@ -1,0 +1,106 @@
+{
+  "agents": [
+    {
+      "id": "quinn",
+      "name": "Quinn",
+      "role": "Subagent",
+      "model": "unknown",
+      "responsibility": "See SOUL.md",
+      "status": "idle",
+      "soul": {
+        "personality": "",
+        "specialties": [
+          "Architecture design",
+          "Algorithm optimization",
+          "Complex feature implementation",
+          "Code review and critique",
+          "Debugging tricky issues",
+          "Refactoring and improvement"
+        ],
+        "whenToUse": [],
+        "systemPrompt": "You are Quinn, an advanced coding assistant powered by Qwen 3 Coder Next via Ollama Cloud. You specialize in complex programming tasks: architecture design, algorithm optimization, complex feature implementation, code review, debugging tricky issues, and refactoring. Provide thorough analysis, consider edge cases, and explain your reasoning. When reviewing code, be critical and suggest improvements.",
+        "boundaries": []
+      }
+    },
+    {
+      "id": "dex",
+      "name": "Dex",
+      "role": "Subagent",
+      "model": "unknown",
+      "responsibility": "See SOUL.md",
+      "status": "idle",
+      "soul": {
+        "personality": "",
+        "specialties": [
+          "Basic CRUD operations",
+          "Simple UI components",
+          "Utility functions",
+          "Straightforward bug fixes",
+          "Rapid prototyping"
+        ],
+        "whenToUse": [],
+        "systemPrompt": "You are Dex, a coding assistant powered by DeepSeek Coder V2 running locally via Ollama. You specialize in writing clean, efficient code for routine development tasks. Focus on: basic CRUD operations, simple UI components, utility functions, and straightforward bug fixes. Be concise and practical. Always provide working code with brief explanations.",
+        "boundaries": []
+      }
+    }
+  ],
+  "tasks": [],
+  "projects": [],
+  "workflow": [
+    {
+      "name": "Kevin's Request",
+      "description": "Task received from user",
+      "agent": "kevin"
+    },
+    {
+      "name": "Orchestration",
+      "description": "Sam routes to appropriate agent",
+      "agent": "sam"
+    },
+    {
+      "name": "Execution",
+      "description": "Subagent performs task",
+      "agent": "subagent"
+    },
+    {
+      "name": "QA Gate",
+      "description": "Mantis verifies output",
+      "agent": "mantis"
+    },
+    {
+      "name": "Final Update",
+      "description": "Sam reports to Kevin",
+      "agent": "sam"
+    }
+  ],
+  "memorySystem": {
+    "files": [
+      {
+        "file": "active-tasks.md",
+        "purpose": "Current work, priorities",
+        "readFrequency": "Every startup FIRST"
+      },
+      {
+        "file": "projects.md",
+        "purpose": "Project status",
+        "readFrequency": "When delegating"
+      },
+      {
+        "file": "SOUL.md",
+        "purpose": "Agent identity",
+        "readFrequency": "Every session"
+      },
+      {
+        "file": "AGENTS.md",
+        "purpose": "Agent network overview",
+        "readFrequency": "Reference"
+      },
+      {
+        "file": "MEMORY.md",
+        "purpose": "Curated wisdom",
+        "readFrequency": "When needed"
+      }
+    ]
+  },
+  "lastUpdated": "2026-02-19T05:05:27.692Z"
+}
