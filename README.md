@@ -1,10 +1,37 @@
 # 🚀 Mission Control
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue)](https://kmeans4.github.io/mission-control/)
+[![Build Status](https://img.shields.io/badge/Build-Passing-success)](https://github.com/kmeans4/mission-control)
+
 A task and project tracking dashboard built for Kevin's workflow — now with **file-based sync** so Sam can see your tasks!
+
+**🌐 LIVE URL**: https://kmeans4.github.io/mission-control/
 
 ## What This Is
 
 Based on [Bhanu Teja's multi-agent Mission Control system](https://x.com/pbteja1998/status/2017662163540971756), this is a simplified version focused on **tracking tasks across your projects** (CashedBets, ProjectTrackr, etc.).
+
+## 📸 Screenshots
+
+**Dashboard**: Overview with stats, quick actions, and activity feed  
+**Agents**: Agent directory with workload visualization  
+**Tasks**: Kanban board with drag-and-drop workflow  
+**Analytics**: Performance metrics and progress tracking  
+**Settings**: Theme and notification preferences  
+**Projects**: Project tracking with resource allocation
+
+## ✨ Features Overview
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| Dashboard | ✅ Complete | Stats, quick actions, activity feed |
+| Agents Page | ✅ Complete | Agent directory with workload charts |
+| Tasks (Kanban) | ✅ Complete | 5-column workflow, drag & drop |
+| Analytics | ✅ Complete | Performance metrics & visualizations |
+| Settings | ✅ Complete | Theme, notifications, preferences |
+| Projects | ✅ Complete | Project tracking & resource allocation |
+| GitHub Pages | ✅ Deployed | Live at kmeans4.github.io/mission-control |
+
 
 ## ✨ New: File-Based Sync
 
