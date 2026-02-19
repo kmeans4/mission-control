@@ -1,0 +1,5 @@
+{
+  "success": true,
+  "message": "Agent spawn requires live server. Use development mode for full functionality.",
+  "note": "Static deployment - POST not available"
+}

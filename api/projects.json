@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "projects": [
+    {
+      "id": "cashedbets",
+      "name": "CashedBets",
+      "status": "Live",
+      "details": {},
+      "url": "https://cashedbets-v2.vercel.app",
+      "techStack": [
+        "Bubble.io (current)",
+        "planning migration to full code"
+      ]
+    },
+    {
+      "id": "projecttrackr",
+      "name": "ProjectTrackr",
+      "status": "In Development (not public)",
+      "details": {},
+      "description": "Project management for contractors"
+    },
+    {
+      "id": "phenofarm-mvp",
+      "name": "PhenoFarm MVP",
+      "status": "Testing API",
+      "details": {},
+      "url": "https://phenofarm-mvp.vercel.app",
+      "techStack": [
+        "Next.js",
+        "Prisma",
+        "NextAuth",
+        "Vercel",
+        "Neon PostgreSQL"
+      ]
+    },
+    {
+      "id": "openclaw-agent-system",
+      "name": "OpenClaw Agent System",
+      "status": "Operational",
+      "details": {}
+    },
+    {
+      "id": "personal-other",
+      "name": "Personal/Other",
+      "status": "unknown",
+      "details": {}
+    }
+  ],
+  "count": 5
+}
