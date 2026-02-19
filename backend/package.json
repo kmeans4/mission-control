@@ -1,0 +1,24 @@
+{
+  "name": "mission-control-backend",
+  "version": "1.0.0",
+  "description": "Mission Control Logs & Monitoring Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "integration": "node integration.js",
+    "rotate": "node log-rotation.js rotate",
+    "status": "node log-rotation.js status",
+    "dev": "node server.js & node integration.js"
+  },
+  "keywords": [
+    "mission-control",
+    "monitoring",
+    "logging",
+    "openclaw"
+  ],
+  "author": "OpenClaw Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

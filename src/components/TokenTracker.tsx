@@ -3,7 +3,7 @@
 import React from 'react';
 import { Coins, TrendingUp, AlertTriangle, Zap } from 'lucide-react';
 
-interface TokenUsage {
+export interface TokenUsage {
   agentId: string;
   agentName: string;
   used: number;

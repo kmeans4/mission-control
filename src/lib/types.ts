@@ -78,3 +78,41 @@ export interface UpdateProjectRequest {
   pending?: string[]
   details?: Record<string, string | string[]>
 }
+
+// Component Types
+export type JobStatus = 'scheduled' | 'running' | 'completed' | 'failed' | 'skipped';
+
+export interface CronJob {
+  id: string;
+  name: string;
+  schedule: string;
+  nextRun: string;
+  lastRun?: {
+    timestamp: string;
+    status: JobStatus;
+    duration?: string;
+  };
+  status: JobStatus;
+  description?: string;
+}
+
+export interface TokenUsage {
+  agentId: string;
+  agentName: string;
+  used: number;
+  limit: number;
+  color: string;
+}
+
+export interface QuickAction {
+  id: string;
+  label: string;
+  description: string;
+  icon: 'restart' | 'clear' | 'settings' | 'deploy' | 'backup' | 'sync' | 'agents' | 'cache';
+  variant?: 'default' | 'destructive' | 'primary';
+  requiresConfirmation?: boolean;
+  confirmationMessage?: string;
+  disabled?: boolean;
+}
+
+export type BuildStatus = 'passing' | 'failing' | 'unknown';

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Logs & Monitoring</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --error: #f85149;
+            --error-bg: rgba(248, 81, 73, 0.1);
+            --warning-bg: rgba(210, 153, 34, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .health-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .health-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .health-dot.healthy { background: var(--success); }
+        .health-dot.warning { background: var(--warning); }
+        .health-dot.critical { background: var(--error); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .panel {
+            display: none;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        /* Live Log Viewer */
+        .log-viewer {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            height: 500px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 2px;
+        }
+
+        .log-entry.error {
+            background: var(--error-bg);
+            border-left: 3px solid var(--error);
+        }
+
+        .log-entry.warning {
+            background: var(--warning-bg);
+            border-left: 3px solid var(--warning);
+        }
+
+        .log-entry.info {
+            border-left: 3px solid var(--accent);
+        }
+
+        .log-timestamp {
+            color: var(--text-secondary);
+            margin-right: 12px;
+        }
+
+        .log-level {
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .log-level.ERROR { color: var(--error); }
+        .log-level.WARN { color: var(--warning); }
+        .log-level.INFO { color: var(--accent); }
+
+        .log-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        select, input[type="text"] {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 250px;
+        }
+
+        button {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        button.danger {
+            background: var(--error);
+        }
+
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .toggle input {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Error Dashboard */
+        .error-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--error);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .error-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .error-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .error-item:hover {
+            border-color: var(--error);
+        }
+
+        .error-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .error-message {
+            font-weight: 500;
+        }
+
+        .error-time {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .stack-trace {
+            display: none;
+            background: var(--bg-primary);
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .error-item.expanded .stack-trace {
+            display: block;
+        }
+
+        .chart-container {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            height: 300px;
+        }
+
+        /* Performance Monitor */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .metric-card.critical .metric-value {
+            color: var(--error);
+        }
+
+        .metric-card.warning .metric-value {
+            color: var(--warning);
+        }
+
+        .threshold-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .threshold-input {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .threshold-input label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .threshold-input input {
+            width: 100%;
+        }
+
+        /* Notifications Center */
+        .notification-settings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .settings-group {
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .settings-group h3 {
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-history {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .notification-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .notification-icon.error { background: var(--error-bg); }
+        .notification-icon.warning { background: var(--warning-bg); }
+        .notification-icon.info { background: rgba(88, 166, 255, 0.1); }
+
+        /* Health Status */
+        .component-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .component-card {
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .component-name {
+            font-weight: 500;
+        }
+
+        .component-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .component-status-dot.online { background: var(--success); }
+        .component-status-dot.degraded { background: var(--warning); }
+        .component-status-dot.offline { background: var(--error); }
+
+        .diagnostics-panel {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .diagnostics-output {
+            background: var(--bg-primary);
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 16px;
+            font-family: monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .diagnostics-output.visible {
+            display: block;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            min-width: 300px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.error { border-left: 4px solid var(--error); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.info { border-left: 4px solid var(--accent); }
+
+        .toast-close {
+            margin-left: auto;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🖥️ Mission Control - Logs & Monitoring</h1>
+            <div class="health-indicator">
+                <div class="health-dot healthy" id="healthDot"></div>
+                <span id="healthStatus">System Healthy</span>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('logs')">📜 Live Logs</button>
+            <button class="tab" onclick="switchTab('errors')">⚠️ Error Dashboard</button>
+            <button class="tab" onclick="switchTab('performance')">📊 Performance</button>
+            <button class="tab" onclick="switchTab('notifications')">🔔 Notifications</button>
+            <button class="tab" onclick="switchTab('health')">💚 Health Status</button>
+        </div>
+
+        <!-- Live Log Viewer -->
+        <div id="logs-panel" class="panel active">
+            <div class="log-filters">
+                <div class="filter-group">
+                    <label>Agent:</label>
+                    <select id="agentFilter" onchange="filterLogs()">
+                        <option value="">All Agents</option>
+                        <option value="sam">Sam</option>
+                        <option value="quinn">Quinn</option>
+                        <option value="dex">Dex</option>
+                        <option value="mantis">Mantis</option>
+                        <option value="echo">Echo</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Level:</label>
+                    <select id="levelFilter" onchange="filterLogs()">
+                        <option value="">All Levels</option>
+                        <option value="ERROR">Error</option>
+                        <option value="WARN">Warning</option>
+                        <option value="INFO">Info</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <input type="text" id="searchLogs" placeholder="Search logs..." onkeyup="filterLogs()">
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="autoScroll" checked>
+                    Auto-scroll
+                </label>
+                <button onclick="downloadLogs()">📥 Download</button>
+                <button class="secondary" onclick="clearLogs()">🗑️ Clear</button>
+            </div>
+            <div class="log-viewer" id="logViewer">
+                <!-- Logs will be populated here -->
+            </div>
+            <div class="last-updated">Last updated: <span id="logUpdateTime">--</span></div>
+        </div>
+
+        <!-- Error Dashboard -->
+        <div id="errors-panel" class="panel">
+            <div class="error-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="errorCount">0</div>
+                    <div class="stat-label">Current Errors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="errorRate">0</div>
+                    <div class="stat-label">Errors/Hour</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="errorFixes">0</div>
+                    <div class="stat-label">Auto-Fixed</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="errorFrequencyChart"></canvas>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3>Recent Errors</h3>
+                <button onclick="exportErrors()">📥 Export Report</button>
+            </div>
+            <div class="error-list" id="errorList">
+                <!-- Errors will be populated here -->
+            </div>
+        </div>
+
+        <!-- Performance Monitor -->
+        <div id="performance-panel" class="panel">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" id="tokenRate">0</div>
+                    <div class="metric-label">Tokens/min</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="requestsMin">0</div>
+                    <div class="metric-label">Requests/min</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="avgResponse">0ms</div>
+                    <div class="metric-label">Avg Response</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="memoryUsage">0%</div>
+                    <div class="metric-label">Memory</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="cpuUsage">0%</div>
+                    <div class="metric-label">CPU</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="diskSpace">0GB</div>
+                    <div class="metric-label">Disk Free</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="tokenUsageChart"></canvas>
+            </div>
+
+            <h3>Alert Thresholds</h3>
+            <div class="threshold-inputs">
+                <div class="threshold-input">
+                    <label>Token Rate Warning</label>
+                    <input type="number" id="tokenWarning" value="10000">
+                </div>
+                <div class="threshold-input">
+                    <label>Token Rate Critical</label>
+                    <input type="number" id="tokenCritical" value="50000">
+                </div>
+                <div class="threshold-input">
+                    <label>Memory Warning (%)</label>
+                    <input type="number" id="memoryWarning" value="80">
+                </div>
+                <div class="threshold-input">
+                    <label>CPU Warning (%)</label>
+                    <input type="number" id="cpuWarning" value="80">
+                </div>
+            </div>
+            <button onclick="saveThresholds()" style="margin-top: 16px;">💾 Save Thresholds</button>
+            <div class="last-updated">Last updated: <span id="perfUpdateTime">--</span></div>
+        </div>
+
+        <!-- Notifications Center -->
+        <div id="notifications-panel" class="panel">
+            <div class="notification-settings">
+                <div class="settings-group">
+                    <h3>🔔 Alert Channels</h3>
+                    <div class="setting-item">
+                        <span>Toast Notifications</span>
+                        <input type="checkbox" id="toastEnabled" checked>
+                    </div>
+                    <div class="setting-item">
+                        <span>Browser Push</span>
+                        <input type="checkbox" id="pushEnabled">
+                    </div>
+                    <div class="setting-item">
+                        <span>Sound Alerts</span>
+                        <input type="checkbox" id="soundEnabled" checked>
+                    </div>
+                    <div class="setting-item">
+                        <span>Email Alerts</span>
+                        <input type="checkbox" id="emailEnabled">
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>📧 Event Types</h3>
+                    <div class="setting-item">
+                        <span>Critical Errors</span>
+                        <input type="checkbox" class="eventType" data-type="error" checked>
+                    </div>
+                    <div class="setting-item">
+                        <span>Warnings</span>
+                        <input type="checkbox" class="eventType" data-type="warning" checked>
+                    </div>
+                    <div class="setting-item">
+                        <span>Agent Spawn/Death</span>
+                        <input type="checkbox" class="eventType" data-type="agent" checked>
+                    </div>
+                    <div class="setting-item">
+                        <span>System Health</span>
+                        <input type="checkbox" class="eventType" data-type="health" checked>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>🌙 Quiet Hours</h3>
+                    <div class="setting-item">
+                        <span>Enable Quiet Hours</span>
+                        <input type="checkbox" id="quietHours">
+                    </div>
+                    <div class="setting-item">
+                        <span>Start Time</span>
+                        <input type="time" id="quietStart" value="22:00">
+                    </div>
+                    <div class="setting-item">
+                        <span>End Time</span>
+                        <input type="time" id="quietEnd" value="08:00">
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Notification History</h3>
+            <div class="notification-history" id="notificationHistory">
+                <!-- Notifications will be populated here -->
+            </div>
+        </div>
+
+        <!-- Health Status -->
+        <div id="health-panel" class="panel">
+            <div class="component-status" id="componentStatus">
+                <div class="component-card">
+                    <span class="component-name">Gateway</span>
+                    <div class="component-status-dot online"></div>
+                </div>
+                <div class="component-card">
+                    <span class="component-name">Ollama</span>
+                    <div class="component-status-dot online"></div>
+                </div>
+                <div class="component-card">
+                    <span class="component-name">Workspace</span>
+                    <div class="component-status-dot online"></div>
+                </div>
+                <div class="component-card">
+                    <span class="component-name">Browser</span>
+                    <div class="component-status-dot online"></div>
+                </div>
+            </div>
+
+            <div class="diagnostics-panel">
+                <h3>System Diagnostics</h3>
+                <p style="color: var(--text-secondary); margin: 12px 0;">Run diagnostics to check system health and identify issues.</p>
+                <button onclick="runDiagnostics()">🔍 Run Diagnostics</button>
+                <button class="secondary" onclick="fixCommonIssues()" style="margin-left: 12px;">🔧 Fix Common Issues</button>
+                <div class="diagnostics-output" id="diagnosticsOutput"></div>
+            </div>
+            <div class="last-updated">Last updated: <span id="healthUpdateTime">--</span></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

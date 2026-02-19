@@ -71,56 +71,7 @@
       "status": "idle"
     }
   ],
-  "tasks": [
-    {
-      "id": "task-0",
-      "title": "Discord dashboard",
-      "status": "completed",
-      "section": "Recently Completed"
-    },
-    {
-      "id": "task-1",
-      "title": "Gemini CLI setup",
-      "status": "completed",
-      "section": "Recently Completed"
-    },
-    {
-      "id": "task-2",
-      "title": "X/Tweet reading strategy",
-      "status": "completed",
-      "section": "Recently Completed"
-    },
-    {
-      "id": "task-3",
-      "title": "Memory system refactor",
-      "status": "completed",
-      "section": "Recently Completed"
-    },
-    {
-      "id": "task-4",
-      "title": "Agent Command Center Cards",
-      "status": "completed",
-      "section": "In Progress"
-    },
-    {
-      "id": "task-5",
-      "title": "Animation Research Guide",
-      "status": "completed",
-      "section": "In Progress"
-    },
-    {
-      "id": "task-6",
-      "title": "Mission Control Phase 7: Cron Calendar",
-      "status": "in-progress",
-      "section": "In Progress"
-    },
-    {
-      "id": "task-7",
-      "title": "API Test Task",
-      "status": "completed",
-      "section": "Next Up (Backlog)"
-    }
-  ],
+  "tasks": [],
   "projects": [
     {
       "id": "cashedbets",
@@ -223,5 +174,5 @@
       }
     ]
   },
-  "lastUpdated": "2026-02-19T15:19:21.754Z"
+  "lastUpdated": "2026-02-19T16:35:10.854Z"
 }

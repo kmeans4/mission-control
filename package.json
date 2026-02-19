@@ -5,10 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run build:data && next build && npm run copy:data",
+    "build": "npm run build:data && npm run build:app && npm run copy:data && npm run generate:api",
+    "build:app": "rm -rf src/app/api && next build",
     "start": "next start",
     "build:data": "tsx scripts/build-data.ts",
     "copy:data": "tsx scripts/copy-data.ts",
+    "generate:api": "tsx scripts/generate-static-api.ts",
     "watch:data": "tsx scripts/watch-data.ts",
     "dev:full": "concurrently \"npm run watch:data\" \"npm run dev\"",
     "lint": "next lint",
@@ -17,6 +19,7 @@
   },
   "dependencies": {
     "chokidar": "^3.6.0",
+    "framer-motion": "^12.34.2",
     "lucide-react": "^0.574.0",
     "next": "^15.1.0",
     "react": "^19.0.0",

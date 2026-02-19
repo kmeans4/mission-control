@@ -1,0 +1,55 @@
+{
+  "alertThresholds": {
+    "tokenWarning": 10000,
+    "tokenCritical": 50000,
+    "memoryWarning": 80,
+    "memoryCritical": 95,
+    "cpuWarning": 80,
+    "cpuCritical": 95,
+    "diskWarning": 85,
+    "diskCritical": 95,
+    "errorRateWarning": 10,
+    "errorRateCritical": 50,
+    "responseTimeWarning": 2000,
+    "responseTimeCritical": 10000
+  },
+  "notifications": {
+    "toastEnabled": true,
+    "pushEnabled": false,
+    "soundEnabled": true,
+    "emailEnabled": false,
+    "quietHours": {
+      "enabled": false,
+      "start": "22:00",
+      "end": "08:00"
+    }
+  },
+  "refreshIntervals": {
+    "logs": 1000,
+    "metrics": 5000,
+    "health": 30000
+  },
+  "logRetention": {
+    "maxAgeDays": 7,
+    "maxSizeMB": 10,
+    "maxArchives": 30,
+    "compressArchives": true
+  },
+  "autoFix": {
+    "enabled": true,
+    "knownIssues": {
+      "connection_timeout": {
+        "fix": "restart_connection",
+        "maxAttempts": 3
+      },
+      "rate_limit": {
+        "fix": "backoff_retry",
+        "backoffMs": 5000
+      },
+      "memory_high": {
+        "fix": "gc_trigger",
+        "threshold": 90
+      }
+    }
+  }
+}

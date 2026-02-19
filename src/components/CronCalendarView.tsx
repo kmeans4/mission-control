@@ -5,7 +5,7 @@ import { Calendar, Clock, Play, Pause, CheckCircle, XCircle, AlertCircle, Chevro
 
 export type JobStatus = 'scheduled' | 'running' | 'completed' | 'failed' | 'skipped';
 
-interface CronJob {
+export interface CronJob {
   id: string;
   name: string;
   schedule: string; // Cron expression or human-readable
