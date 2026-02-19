@@ -32,10 +32,13 @@ async function main() {
       fs.mkdirSync(DIST_DATA_DIR, { recursive: true });
     }
     
-    // Copy the file
+    // Copy the file with both names for compatibility
     const destPath = path.join(DIST_DATA_DIR, 'mission-control.json');
+    const destPath2 = path.join(DIST_DATA_DIR, 'dashboard-data.json');
     fs.copyFileSync(SOURCE_PATH, destPath);
+    fs.copyFileSync(SOURCE_PATH, destPath2);
     console.log('✅ Data copied to dist/data/mission-control.json');
+    console.log('✅ Data copied to dist/data/dashboard-data.json');
   } catch (error) {
     console.error('❌ Copy failed:', error);
     process.exit(1);

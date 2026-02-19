@@ -25,8 +25,9 @@ export default function DashboardPage() {
     if (showLoading) setIsRefreshing(true);
     
     try {
-      // Use relative path for static export compatibility
-      const response = await fetch('./data/mission-control.json');
+      // Use relative path with cache busting for GitHub Pages
+      const cacheBuster = `?_cb=${Date.now()}`;
+      const response = await fetch(`./data/dashboard-data.json${cacheBuster}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

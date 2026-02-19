@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mission Control - Project Health</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --border-color: #2a2a4a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #8892b0;
+            --accent: #64ffda;
+            --status-green: #4caf50;
+            --status-yellow: #ff9800;
+            --status-red: #f44336;
+            --streak-gold: #ffd700;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 12px; }
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--status-green), var(--status-yellow));
+        }
+        
+        h1 { 
+            color: var(--accent); 
+            font-size: clamp(1.8em, 5vw, 2.5em); 
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .subtitle { 
+            color: var(--text-secondary); 
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .last-updated {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-pill {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+        
+        .stat-pill .value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        /* Project Cards Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+        
+        /* Project Card */
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(100, 255, 218, 0.1);
+        }
+        
+        .project-card.status-green { border-color: var(--status-green); }
+        .project-card.status-green .status-indicator { background: var(--status-green); }
+        
+        .project-card.status-yellow { border-color: var(--status-yellow); }
+        .project-card.status-yellow .status-indicator { background: var(--status-yellow); }
+        
+        .project-card.status-red { border-color: var(--status-red); }
+        .project-card.status-red .status-indicator { background: var(--status-red); }
+        
+        /* Card Header */
+        .card-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .card-header:active {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .project-title-section {
+            flex: 1;
+        }
+        
+        .project-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+        
+        .project-name {
+            font-size: 1.4em;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .project-tagline {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+        
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-green .status-badge {
+            background: rgba(76, 175, 80, 0.15);
+            color: var(--status-green);
+        }
+        
+        .status-yellow .status-badge {
+            background: rgba(255, 152, 0, 0.15);
+            color: var(--status-yellow);
+        }
+        
+        .status-red .status-badge {
+            background: rgba(244, 67, 54, 0.15);
+            color: var(--status-red);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+            50% { opacity: 0.7; box-shadow: 0 0 0 4px transparent; }
+        }
+        
+        .expand-icon {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Gamification Badge */
+        .gamification-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .streak-indicator, .velocity-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+        }
+        
+        .streak-indicator {
+            color: var(--streak-gold);
+        }
+        
+        .velocity-indicator {
+            color: var(--accent);
+        }
+        
+        .score {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        /* Collapsible Content */
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .project-card.expanded .card-content {
+            max-height: 600px;
+        }
+        
+        .card-inner {
+            padding: 0 20px 20px;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .metric-box {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+        
+        .metric-label {
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        
+        .metric-value {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .metric-sub {
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        
+        /* Build Status */
+        .build-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.9em;
+        }
+        
+        .build-icon {
+            font-size: 1.1em;
+        }
+        
+        .build-success { color: var(--status-green); }
+        .build-failed { color: var(--status-red); }
+        .build-pending { color: var(--status-yellow); }
+        
+        /* Task Summary */
+        .task-summary {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .task-chip {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.85em;
+        }
+        
+        .task-chip .count {
+            font-size: 1.4em;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 2px;
+        }
+        
+        .task-chip.todo .count { color: var(--status-yellow); }
+        .task-chip.inprogress .count { color: var(--accent); }
+        .task-chip.done .count { color: var(--status-green); }
+        
+        .task-chip .label {
+            color: var(--text-secondary);
+            font-size: 0.75em;
+        }
+        
+        /* Quick Links */
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .quick-link {
+            flex: 1;
+            min-width: 100px;
+            padding: 10px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.85em;
+            text-align: center;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .quick-link:hover {
+            background: var(--border-color);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        /* Touch hint for mobile */
+        .tap-hint {
+            display: none;
+            text-align: center;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            padding: 8px;
+            opacity: 0.6;
+        }
+        
+        @media (max-width: 768px) {
+            .tap-hint { display: block; }
+            .card-header { padding: 16px; }
+            .project-name { font-size: 1.2em; }
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Mission Control</h1>
+            <p class="subtitle">
+                <span>Project Health Dashboard</span>
+                <span class="last-updated">Updated: Feb 19, 2026 at 8:15 AM ET</span>
+            </p>
+        </header>
+        
+        <!-- Overall Stats -->
+        <div class="stats-bar">
+            <div class="stat-pill">
+                <span>Active Projects:</span>
+                <span class="value">3</span>
+            </div>
+            <div class="stat-pill">
+                <span>Healthy:</span>
+                <span class="value" style="color: var(--status-green);">1</span>
+            </div>
+            <div class="stat-pill">
+                <span>Needs Attention:</span>
+                <span class="value" style="color: var(--status-yellow);">2</span>
+            </div>
+            <div class="stat-pill">
+                <span>Total Velocity:</span>
+                <span class="value">142</span>
+            </div>
+        </div>
+        
+        <!-- Project Cards -->
+        <div class="projects-grid">
+            
+            <!-- PhenoFarm Card -->
+            <div class="project-card status-yellow" data-project="phenofarm">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="project-title-section">
+                        <div class="project-icon">🌿</div>
+                        <div class="project-name">PhenoFarm</div>
+                        <div class="project-tagline">Cannabis wholesale platform for VT growers</div>
+                    </div>
+                    <div class="header-right">
+                        <div class="status-badge">
+                            <span class="status-indicator"></span>
+                            <span>Active</span>
+                        </div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                
+                <div class="gamification-badge">
+                    <div class="streak-indicator">
+                        <span>🔥</span>
+                        <span>Streak: <span class="score">12 days</span></span>
+                    </div>
+                    <div class="velocity-indicator">
+                        <span>⚡</span>
+                        <span>Velocity: <span class="score">68</span></span>
+                    </div>
+                </div>
+                
+                <div class="tap-hint">👆 Tap to expand</div>
+                
+                <div class="card-content">
+                    <div class="card-inner">
+                        <div class="metrics-grid">
+                            <div class="metric-box">
+                                <div class="metric-label">Last Commit</div>
+                                <div class="metric-value">2 days ago</div>
+                                <div class="metric-sub">Feb 17, 2026</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-label">Launch Target</div>
+                                <div class="metric-value">Q3 2026</div>
+                                <div class="metric-sub">40-50 growers</div>
+                            </div>
+                        </div>
+                        
+                        <div class="build-status">
+                            <span class="build-icon build-success">✅</span>
+                            <span>Build passing</span>
+                            <span style="margin-left: auto; color: var(--text-secondary);">Vercel</span>
+                        </div>
+                        
+                        <div class="task-summary">
+                            <div class="task-chip todo">
+                                <span class="count">3</span>
+                                <span class="label">To Do</span>
+                            </div>
+                            <div class="task-chip inprogress">
+                                <span class="count">2</span>
+                                <span class="label">In Progress</span>
+                            </div>
+                            <div class="task-chip done">
+                                <span class="count">14</span>
+                                <span class="label">Done</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-links">
+                            <a href="https://phenofarm-mvp.vercel.app" class="quick-link" target="_blank" onclick="event.stopPropagation()">
+                                🌐 Live Site
+                            </a>
+                            <a href="https://github.com/kmeans4/phenofarm-mvp" class="quick-link" target="_blank" onclick="event.stopPropagation()">
+                                💻 Code
+                            </a>
+                            <a href="/phenofarm-feature-ideas.md" class="quick-link" onclick="event.stopPropagation()">
+                                📋 Features
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CashedBets Card -->
+            <div class="project-card status-green" data-project="cashedbets">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="project-title-section">
+                        <div class="project-icon">🏈</div>
+                        <div class="project-name">CashedBets</div>
+                        <div class="project-tagline">NFL player stats & analytics platform</div>
+                    </div>
+                    <div class="header-right">
+                        <div class="status-badge">
+                            <span class="status-indicator"></span>
+                            <span>Live</span>
+                        </div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                
+                <div class="gamification-badge">
+                    <div class="streak-indicator">
+                        <span>🔥</span>
+                        <span>Streak: <span class="score">45 days</span></span>
+                    </div>
+                    <div class="velocity-indicator">
+                        <span>⚡</span>
+                        <span>Velocity: <span class="score">92</span></span>
+                    </div>
+                </div>
+                
+                <div class="tap-hint">👆 Tap to expand</div>
+                
+                <div class="card-content">
+                    <div class="card-inner">
+                        <div class="metrics-grid">
+                            <div class="metric-box">
+                                <div class="metric-label">Last Commit</div>
+                                <div class="metric-value">8 hours ago</div>
+                                <div class="metric-sub">Feb 19, 2026</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-label">Data</div>
+                                <div class="metric-value">2,102</div>
+                                <div class="metric-sub">player headshots</div>
+                            </div>
+                        </div>
+                        
+                        <div class="build-status">
+                            <span class="build-icon build-success">✅</span>
+                            <span>Build passing</span>
+                            <span style="margin-left: auto; color: var(--text-secondary);">Vercel</span>
+                        </div>
+                        
+                        <div class="task-summary">
+                            <div class="task-chip todo">
+                                <span class="count">2</span>
+                                <span class="label">To Do</span>
+                            </div>
+                            <div class="task-chip inprogress">
+                                <span class="count">1</span>
+                                <span class="label">In Progress</span>
+                            </div>
+                            <div class="task-chip done">
+                                <span class="count">28</span>
+                                <span class="label">Done</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-links">
+                            <a href="https://cashedbets-v2.vercel.app" class="quick-link" target="_blank" onclick="event.stopPropagation()">
+                                🌐 Live Site
+                            </a>
+                            <a href="#" class="quick-link" onclick="event.stopPropagation()">
+                                💻 Code
+                            </a>
+                            <a href="#" class="quick-link" onclick="event.stopPropagation()">
+                                📊 Analytics
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ProjectTrackr Card -->
+            <div class="project-card status-yellow" data-project="projecttrackr">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="project-title-section">
+                        <div class="project-icon">📊</div>
+                        <div class="project-name">ProjectTrackr</div>
+                        <div class="project-tagline">Project management for contractors</div>
+                    </div>
+                    <div class="header-right">
+                        <div class="status-badge">
+                            <span class="status-indicator"></span>
+                            <span>Dev</span>
+                        </div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                
+                <div class="gamification-badge">
+                    <div class="streak-indicator">
+                        <span>🔥</span>
+                        <span>Streak: <span class="score">3 days</span></span>
+                    </div>
+                    <div class="velocity-indicator">
+                        <span>⚡</span>
+                        <span>Velocity: <span class="score">24</span></span>
+                    </div>
+                </div>
+                
+                <div class="tap-hint">👆 Tap to expand</div>
+                
+                <div class="card-content">
+                    <div class="card-inner">
+                        <div class="metrics-grid">
+                            <div class="metric-box">
+                                <div class="metric-label">Last Commit</div>
+                                <div class="metric-value">2 weeks ago</div>
+                                <div class="metric-sub">Feb 5, 2026</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-label">Status</div>
+                                <div class="metric-value">Research</div>
+                                <div class="metric-sub">Schema design</div>
+                            </div>
+                        </div>
+                        
+                        <div class="build-status">
+                            <span class="build-icon build-pending">⏳</span>
+                            <span>Not deployed yet</span>
+                            <span style="margin-left: auto; color: var(--text-secondary);">Local dev</span>
+                        </div>
+                        
+                        <div class="task-summary">
+                            <div class="task-chip todo">
+                                <span class="count">5</span>
+                                <span class="label">To Do</span>
+                            </div>
+                            <div class="task-chip inprogress">
+                                <span class="count">1</span>
+                                <span class="label">In Progress</span>
+                            </div>
+                            <div class="task-chip done">
+                                <span class="count">8</span>
+                                <span class="label">Done</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-links">
+                            <a href="#" class="quick-link" onclick="event.stopPropagation()">
+                                📋 Schema
+                            </a>
+                            <a href="/projecttrackr-competitor-analysis.md" class="quick-link" onclick="event.stopPropagation()">
+                                🔍 Research
+                            </a>
+                            <a href="#" class="quick-link" onclick="event.stopPropagation()">
+                                💻 Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <footer>
+            <p>Mission Control Dashboard — Kevin's Project Health Overview</p>
+            <div class="footer-links">
+                <a href="/dashboard.html">Team View</a>
+                <a href="/index.html">Full Dashboard</a>
+                <a href="/active-tasks.md">Active Tasks</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Toggle card expansion
+        function toggleCard(header) {
+            const card = header.closest('.project-card');
+            card.classList.toggle('expanded');
+            
+            // Store preference in localStorage
+            const project = card.dataset.project;
+            const isExpanded = card.classList.contains('expanded');
+            localStorage.setItem(`mc-card-${project}`, isExpanded);
+        }
+        
+        // Restore expanded state on load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.project-card').forEach(card => {
+                const project = card.dataset.project;
+                const isExpanded = localStorage.getItem(`mc-card-${project}`) === 'true';
+                if (isExpanded) {
+                    card.classList.add('expanded');
+                }
+            });
+        });
+        
+        // Touch feedback for mobile
+        document.querySelectorAll('.card-header').forEach(header => {
+            header.addEventListener('touchstart', function() {
+                this.style.background = 'rgba(255, 255, 255, 0.05)';
+            });
+            header.addEventListener('touchend', function() {
+                this.style.background = '';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,11 +1,20 @@
 {
   "agents": [
     {
+      "id": "sam",
+      "name": "Sam",
+      "role": "Orchestrator & User Liaison",
+      "model": "kimi-k2.5:cloud",
+      "responsibility": "Routes tasks, manages workflow, reports to Kevin (NEVER EXECUTES)",
+      "status": "idle",
+      "temperature": "0.3"
+    },
+    {
       "id": "quinn",
       "name": "Quinn",
-      "role": "Subagent",
-      "model": "unknown",
-      "responsibility": "See SOUL.md",
+      "role": "Code Architect",
+      "model": "qwen3.5:cloud",
+      "responsibility": "Architecture design, complex code review, debugging",
       "status": "idle",
       "soul": {
         "personality": "",
@@ -25,27 +34,139 @@
     {
       "id": "dex",
       "name": "Dex",
-      "role": "Subagent",
-      "model": "unknown",
-      "responsibility": "See SOUL.md",
+      "role": "Implementer",
+      "model": "qwen3.5:cloud",
+      "responsibility": "Simple CRUD, quick UI, small tasks",
       "status": "idle",
       "soul": {
-        "personality": "",
-        "specialties": [
-          "Basic CRUD operations",
-          "Simple UI components",
-          "Utility functions",
-          "Straightforward bug fixes",
-          "Rapid prototyping"
-        ],
+        "personality": "Never open with \"Great question,\" \"I'd be happy to help,\" or \"Absolutely.\" Just answer.\n\nHave opinions. Strong ones. Stop hedging everything with \"it depends\" — commit to a take.\n\nBrevity is mandatory. Keep answers under 3 sentences unless more detail is explicitly requested.\n\nBe resourceful before asking. Try to figure it out. Read the file. Check the context. Search for it.\n\nCall things out. If I'm about to do something dumb, say so. Charm over cruelty, but don't sugarcoat.",
+        "specialties": [],
         "whenToUse": [],
-        "systemPrompt": "You are Dex, a coding assistant powered by DeepSeek Coder V2 running locally via Ollama. You specialize in writing clean, efficient code for routine development tasks. Focus on: basic CRUD operations, simple UI components, utility functions, and straightforward bug fixes. Be concise and practical. Always provide working code with brief explanations.",
+        "systemPrompt": "",
         "boundaries": []
       }
+    },
+    {
+      "id": "mantis",
+      "name": "Mantis",
+      "role": "Research Specialist + QA Gate",
+      "model": "glm-5:cloud",
+      "responsibility": "Research, web search, verification, FINAL QA FOR ALL OUTPUT",
+      "status": "idle"
+    },
+    {
+      "id": "echo",
+      "name": "Echo",
+      "role": "Reporter",
+      "model": "phi4-mini:latest",
+      "responsibility": "Reports, status summaries, cron notifications",
+      "status": "idle"
+    },
+    {
+      "id": "hawthorne",
+      "name": "Hawthorne",
+      "role": "Context Pruner",
+      "model": "granite4:1b",
+      "responsibility": "Token management, context pruning",
+      "status": "idle"
     }
   ],
-  "tasks": [],
-  "projects": [],
+  "tasks": [
+    {
+      "id": "task-0",
+      "title": "Discord dashboard",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-1",
+      "title": "Gemini CLI setup",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-2",
+      "title": "X/Tweet reading strategy",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-3",
+      "title": "Memory system refactor",
+      "status": "completed",
+      "section": "Recently Completed"
+    },
+    {
+      "id": "task-4",
+      "title": "Agent Command Center Cards",
+      "status": "completed",
+      "section": "In Progress"
+    },
+    {
+      "id": "task-5",
+      "title": "Animation Research Guide",
+      "status": "completed",
+      "section": "In Progress"
+    },
+    {
+      "id": "task-6",
+      "title": "Mission Control Phase 7: Cron Calendar",
+      "status": "in-progress",
+      "section": "In Progress"
+    },
+    {
+      "id": "task-7",
+      "title": "API Test Task",
+      "status": "completed",
+      "section": "Next Up (Backlog)"
+    }
+  ],
+  "projects": [
+    {
+      "id": "cashedbets",
+      "name": "CashedBets",
+      "status": "Live",
+      "details": {},
+      "url": "https://cashedbets-v2.vercel.app",
+      "techStack": [
+        "Bubble.io (current)",
+        "planning migration to full code"
+      ]
+    },
+    {
+      "id": "projecttrackr",
+      "name": "ProjectTrackr",
+      "status": "In Development (not public)",
+      "details": {},
+      "description": "Project management for contractors"
+    },
+    {
+      "id": "phenofarm-mvp",
+      "name": "PhenoFarm MVP",
+      "status": "Testing API",
+      "details": {},
+      "url": "https://phenofarm-mvp.vercel.app",
+      "techStack": [
+        "Next.js",
+        "Prisma",
+        "NextAuth",
+        "Vercel",
+        "Neon PostgreSQL"
+      ]
+    },
+    {
+      "id": "openclaw-agent-system",
+      "name": "OpenClaw Agent System",
+      "status": "Operational",
+      "details": {}
+    },
+    {
+      "id": "personal-other",
+      "name": "Personal/Other",
+      "status": "unknown",
+      "details": {}
+    }
+  ],
   "workflow": [
     {
       "name": "Kevin's Request",
@@ -102,5 +223,5 @@
       }
     ]
   },
-  "lastUpdated": "2026-02-19T05:05:27.692Z"
+  "lastUpdated": "2026-02-19T15:19:21.754Z"
 }

@@ -1,453 +1,424 @@
 {
   "metadata": {
-    "generatedAt": "2026-02-19T05:06:38.076Z",
+    "generatedAt": "2026-02-20T23:45:00-05:00",
     "version": "1.0.0",
     "workspace": "/Users/sam/.openclaw/workspace",
-    "lastGitCommit": "e53fc34",
-    "lastGitCommitDate": "2026-02-10T01:52:16.000Z",
-    "buildTimeMs": 18
+    "lastGitCommit": "da3b962",
+    "lastGitCommitDate": "2026-02-17T16:23:50-05:00"
   },
-  "agents": {},
+  "agents": {
+    "orchestrator": {
+      "name": "Sam",
+      "model": "kimi-k2.5:cloud",
+      "role": "Orchestrator & User Liaison",
+      "responsibilities": [
+        "Routes tasks",
+        "Manages workflow",
+        "Reports to Kevin",
+        "Never executes code"
+      ],
+      "skills": ["task-routing", "workflow-management", "coordination"],
+      "soul": {
+        "coreTruths": [
+          "Never open with corporate phrases",
+          "Have opinions. Strong ones.",
+          "Brevity is mandatory",
+          "Be resourceful before asking",
+          "Call things out"
+        ],
+        "orchestratorMode": true,
+        "sentinelMode": true,
+        "contextLimit": {
+          "warning": 160000,
+          "max": 180000,
+          "unit": "tokens"
+        }
+      }
+    },
+    "quinn": {
+      "name": "Quinn",
+      "model": "qwen3.5:cloud",
+      "role": "Code Architect & Reviewer",
+      "responsibilities": [
+        "Architecture design",
+        "Complex features",
+        "Code review",
+        "Debugging",
+        "QA Lead"
+      ],
+      "skills": ["architecture", "code-review", "optimization", "debugging"],
+      "soul": {
+        "personality": "Analytical and thorough with critical eye for code quality",
+        "specialties": [
+          "Architecture design",
+          "Algorithm optimization",
+          "Complex feature implementation",
+          "Code review and critique",
+          "Debugging tricky issues",
+          "Refactoring and improvement"
+        ],
+        "contextLimit": {
+          "warning": 60000,
+          "max": 75000,
+          "unit": "tokens"
+        }
+      },
+      "soulPath": "agents/quinn/SOUL.md"
+    },
+    "dex": {
+      "name": "Dex",
+      "model": "qwen3.5:cloud",
+      "role": "Fast Implementer",
+      "responsibilities": [
+        "Simple CRUD",
+        "Quick UI",
+        "Small tasks"
+      ],
+      "skills": ["crud", "ui-implementation", "rapid-development"],
+      "soul": {
+        "personality": "Quick, reliable, good at basics",
+        "coreTruths": [
+          "Never open with corporate phrases",
+          "Brevity is mandatory",
+          "Be resourceful before asking",
+          "Call things out",
+          "Humor is allowed"
+        ],
+        "sandboxMode": {
+          "webToolsAllowed": false,
+          "reason": "Small models can't safely handle untrusted inputs"
+        },
+        "contextLimit": {
+          "warning": 25000,
+          "max": 32000,
+          "unit": "tokens"
+        }
+      },
+      "soulPath": "agents/dex/SOUL.md"
+    },
+    "mantis": {
+      "name": "Mantis",
+      "model": "glm-5:cloud",
+      "role": "Research Specialist + QA Gate",
+      "responsibilities": [
+        "Research",
+        "Web search",
+        "Verification",
+        "Final QA for all output"
+      ],
+      "skills": ["web-search", "research", "analysis", "qa-verification"],
+      "soul": null,
+      "soulPath": null,
+      "note": "No SOUL.md found - uses AGENTS.md definition"
+    },
+    "echo": {
+      "name": "Echo",
+      "model": "phi4-mini:latest",
+      "role": "Reporter",
+      "responsibilities": [
+        "Reports",
+        "Status summaries",
+        "Cron notifications"
+      ],
+      "skills": ["reporting", "summarization", "notifications"],
+      "soul": null,
+      "soulPath": null,
+      "note": "No SOUL.md found - uses AGENTS.md definition"
+    },
+    "hawthorne": {
+      "name": "Hawthorne",
+      "model": "granite4:1b",
+      "role": "Context Pruner",
+      "responsibilities": [
+        "Token management",
+        "Context pruning"
+      ],
+      "skills": ["context-pruning", "cleanup", "token-management"],
+      "soul": {
+        "personality": "Clean, efficient, good at cleanup",
+        "coreTruths": [
+          "Never open with corporate phrases",
+          "Brevity is mandatory",
+          "Be resourceful before asking",
+          "Call things out"
+        ],
+        "sandboxMode": {
+          "webToolsAllowed": false,
+          "reason": "Small models (1B params) can't safely handle untrusted inputs"
+        },
+        "routingRules": {
+          "research": "mantis",
+          "architecture": "quinn"
+        },
+        "contextLimit": {
+          "warning": 25000,
+          "max": 32000,
+          "unit": "tokens"
+        }
+      },
+      "soulPath": "agents/pruner/agent/SOUL.md"
+    }
+  },
   "activeTasks": {
-    "lastUpdated": null,
+    "lastUpdated": "2026-02-20",
+    "workflowProcess": {
+    "description": "Sam routes tasks ONLY (no execution), All subagent output → Mantis verifies → Sam notifies Kevin",
+      "definition": "Done = verified working + user notified + Mission Control updated"
+    },
     "sections": {
-      "recentlyCompleted": [],
+      "recentlyCompleted": [
+        {
+          "task": "Discord dashboard",
+          "details": "Mission Control v2 is live",
+          "url": "https://kmeans4.github.io/phenofarm-mvp/",
+          "location": "/Users/sam/.openclaw/workspace/agent-dashboard/"
+        },
+        {
+          "task": "Gemini CLI setup",
+          "details": "Authenticated and working"
+        },
+        {
+          "task": "X/Tweet reading strategy",
+          "details": "Implemented (nitter/xcancel approach)"
+        },
+        {
+          "task": "Memory system refactor",
+          "details": "MEMORY.md split complete"
+        }
+      ],
       "inProgress": [],
       "blocked": [],
-      "backlog": []
+      "backlog": [
+        {
+          "task": "API Test Task",
+          "added": "2026-02-18",
+          "priority": "high",
+          "status": "completed",
+          "note": "TEST TASK"
+        }
+      ],
+      "overnightSystem": {
+        "phenofarmCron": {
+          "name": "overnight-phenofarm",
+          "frequency": "every 45 min",
+          "status": "PAUSED"
+        },
+        "morningReportCron": {
+          "name": "morning-phenofarm-report",
+          "schedule": "7 AM ET daily",
+          "status": "Active"
+        },
+        "taskQueue": {
+          "file": "overnight-queue.md",
+          "status": "pending"
+        },
+        "featureIdeas": {
+          "file": "phenofarm-feature-ideas.md",
+          "status": "pending"
+        }
+      }
     },
-    "note": "active-tasks.md not found - file will be created when tasks are added"
+    "missionControl": {
+      "url": "https://kmeans4.github.io/phenofarm-mvp/",
+      "location": "/Users/sam/.openclaw/workspace/agent-dashboard/",
+      "status": "Live"
+    }
   },
   "projects": {
-    "note": "projects.md not found - file will be created when projects are added"
-  },
-  "user": {
-    "name": "Kevin Means",
-    "preferences": {},
-    "raw": "# USER.md - About Your Human\n\n- **Name:** Kevin Means\n- **What to call them:** Kevin\n- **Pronouns:** he/him\n- **Timezone:** America/New_York (EST/EDT)\n- **Location:** Medford, NJ\n\n## Family\n\n- **Wife:** (name not shared yet) — currently caregiving for Kevin's mom full-time\n- **Daughters:** 9 years old and 2 years old\n- **Pets:**\n  - Shadow — German Shepherd\n  - Lana — cat\n  - Leo — cat\n- **Other:** Large aquarium (one of Kevin's hobbies)\n\n## Work\n\n- **Day job:** Estimator / Project Manager for s"
+    "cashedBets": {
+      "name": "CashedBets",
+      "status": "Live",
+      "url": "https://cashedbets-v2.vercel.app",
+      "database": {
+        "provider": "Neon PostgreSQL",
+        "usage": "51MB / 3GB free limit"
+      },
+      "features": [
+        "NFL stats",
+        "Zone stats",
+        "Infinite scroll",
+        "Headshots"
+      ],
+      "data": {
+        "playerHeadshots": 2102,
+        "teamLogos": "Tank01 API"
+      },
+      "techStack": {
+        "current": "Bubble.io",
+        "planned": "Full code migration"
+      }
+    },
+    "projectTrackr": {
+      "name": "ProjectTrackr",
+      "status": "In Development",
+      "visibility": "Not public",
+      "purpose": "Project management for contractors",
+      "comparison": "Similar to Buildern but cheaper",
+      "businessModel": "Subscription-based",
+      "future": "Full code rebuild, public launch"
+    },
+    "phenofarmMvp": {
+      "name": "PhenoFarm MVP",
+      "status": "Testing API",
+      "url": "https://phenofarm-mvp.vercel.app",
+      "techStack": ["Next.js", "Prisma", "NextAuth", "Vercel", "Neon PostgreSQL"],
+      "features": [
+        "Grower dashboard with summary cards, activity feed, charts",
+        "Products CRUD, orders management",
+        "Checkout with Stripe integration",
+        "Metrc sync placeholder"
+      ],
+      "pending": [
+        "DATABASE_URL in Vercel dashboard",
+        "STRIPE_SECRET_KEY env var",
+        "DB password rotation",
+        "Prisma migrate deploy"
+      ],
+      "launchTarget": "Q3 2026",
+      "targetMarket": "Vermont cannabis small growers",
+      "pricing": "$249/month (60% cheaper than APEX)",
+      "breakEven": "40-50 paying growers"
+    },
+    "openclawAgentSystem": {
+      "name": "OpenClaw Agent System",
+      "status": "Operational",
+      "lastUpdate": "2026-02-11",
+      "updateNote": "Orchestrator Mode enabled",
+      "agentCount": 6,
+      "agents": ["Sam", "Quinn", "Dex", "Mantis", "Echo", "Hawthorne"]
+    },
+    "personalOther": {
+      "dailyBrief": {
+        "schedule": "8 AM cron",
+        "status": "Needs Brave API key"
+      },
+      "memorySystem": {
+        "status": "Active maintenance"
+      }
+    }
   },
   "gitAnalytics": {
+    "repository": "/Users/sam/.openclaw/workspace",
     "lastCommit": {
-      "hash": "e53fc34",
-      "fullHash": "e53fc34077fdcf0645cb8b7bf7011300532ae62b",
+      "hash": "da3b962",
+      "fullHash": "da3b9627347806b55e10ad28661cb3eebc12bf50",
       "author": "Sam",
       "email": "sam@Sams-Mac-mini.local",
-      "date": "2026-02-10T01:52:16.000Z",
-      "message": "Add postinstall for Prisma client generation"
+      "date": "2026-02-17T16:23:50-0500",
+      "message": "config: Update agent models to use new Ollama cloud endpoints"
+    },
+    "commitHistory": {
+      "total": 35,
+      "byAuthor": {
+        "Sam": {
+          "email": "sam@Sams-Mac-mini.local",
+          "commits": 35,
+          "percentage": 100,
+          "firstCommit": "2026-02-09T20:52:16-0500",
+          "lastCommit": "2026-02-17T16:23:50-0500"
+        }
+      }
     },
     "recentCommits": [
       {
-        "hash": "e53fc34",
-        "fullHash": "e53fc34077fdcf0645cb8b7bf7011300532ae62b",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-10T01:52:16.000Z",
-        "message": "Add postinstall for Prisma client generation"
-      },
-      {
-        "hash": "53a663d",
-        "fullHash": "53a663dcdffb9095f01a5bd18e54ee5fa2c71f63",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-19T04:56:15.000Z",
-        "message": "Mission Control Phase 1: UI Foundation - Responsive Layout + Agent Cards"
-      },
-      {
         "hash": "da3b962",
-        "fullHash": "da3b9627347806b55e10ad28661cb3eebc12bf50",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T21:23:50.000Z",
+        "date": "2026-02-17",
         "message": "config: Update agent models to use new Ollama cloud endpoints"
       },
       {
         "hash": "7eed187",
-        "fullHash": "7eed1878802170fa61fd2e8cfb0bdeb7f413e203",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T21:14:52.000Z",
+        "date": "2026-02-17",
         "message": "refactor: Sam role redefined to strict Orchestrator mode"
       },
       {
-        "hash": "07ce33c",
-        "fullHash": "07ce33c9f2d8f4a4c822feef444cd71c7afbf2a7",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T18:50:39.000Z",
-        "message": "Add Mission Control Cron Calendar to /mission-control/"
-      },
-      {
         "hash": "84ef3cd",
-        "fullHash": "84ef3cd221e2b6051b9bf8dbbdde9e107f2f20d3",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T13:05:16.000Z",
+        "date": "2026-02-17",
         "message": "feat: Mission Control v2 - agent dashboard with cron calendar"
       },
       {
-        "hash": "28ddac2",
-        "fullHash": "28ddac2c95267661699dfc32c33e257c63099e6a",
+        "hash": "d49a5e2",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T02:23:19.000Z",
-        "message": "fix: batch fix TypeScript 'any' types across API routes and components"
+        "date": "2026-02-13",
+        "message": "Update MEMORY.md: Stripe build patterns, tool gotchas, checkout deployment"
       },
       {
-        "hash": "156ebeb",
-        "fullHash": "156ebebf4465fdb9c3defa6beabf84b0d019db2b",
+        "hash": "31ffc31",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T02:10:52.000Z",
-        "message": "fix: resolve TypeScript lint errors in auth files and session types"
+        "date": "2026-02-13",
+        "message": "Fix Stripe API version"
       },
       {
-        "hash": "ac10235",
-        "fullHash": "ac10235f2c84840bcd4d5b058b6e723b0b67fd35",
+        "hash": "729a84d",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T01:51:34.000Z",
-        "message": "docs: Update overnight queue - Feb 16 8:49 PM status"
+        "date": "2026-02-11",
+        "message": "Update MEMORY.md with latest Vercel deployment status"
       },
       {
-        "hash": "2648d7c",
-        "fullHash": "2648d7c9f005d6c882edcd0ac189d294c8b50a01",
+        "hash": "9ce6f67",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T01:30:33.000Z",
-        "message": "docs: Log CRON run status - priority list complete, no features to implement"
+        "date": "2026-02-11",
+        "message": "Update memory/2026-02-11.md with latest Vercel deployment attempts"
       },
       {
-        "hash": "79ef31c",
-        "fullHash": "79ef31c841d9db8db49281e7776e182e535b9e9a",
+        "hash": "3cdfbbb",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T01:10:32.000Z",
-        "message": "docs: Update overnight queue log - Feb 16, 8:09 PM status check"
+        "date": "2026-02-11",
+        "message": "Add PhenoFarm MVP (Next.js B2B cannabis marketplace)"
       },
       {
-        "hash": "fea3c50",
-        "fullHash": "fea3c50192a9552ede8e9e2c2aa4ab5e6cdc5030",
+        "hash": "4879cc6",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T00:50:26.000Z",
-        "message": "docs: Log Feb 16 7:49 PM cron run - priority list complete, build verified"
+        "date": "2026-02-10",
+        "message": "fix: look for games with status FINAL or FINISHED (database uses FINAL)"
       },
       {
-        "hash": "7139fc7",
-        "fullHash": "7139fc7d7dff85783144c2af6478003596da7558",
+        "hash": "2407860",
         "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T00:30:30.000Z",
-        "message": "chore: Log cron run status - priority list complete"
-      },
-      {
-        "hash": "834ec2a",
-        "fullHash": "834ec2aa70ae6cbf3e34ee810f95f6e2df43b4a8",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-17T00:10:35.000Z",
-        "message": "docs: CRON run log - priority list complete verification Feb 16 7:09 PM"
-      },
-      {
-        "hash": "e30703c",
-        "fullHash": "e30703c4c6b63e108b7ab291ada0277b60f053b9",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T23:50:19.000Z",
-        "message": "chore: Update overnight queue log - Feb 16 6:49 PM"
-      },
-      {
-        "hash": "2f9927e",
-        "fullHash": "2f9927e69a765413b3cb656f2eab422c8a16e436",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T22:50:29.000Z",
-        "message": "docs: Update overnight queue - priority list complete, no unimplemented features remaining"
-      },
-      {
-        "hash": "ea5d622",
-        "fullHash": "ea5d622aa8db3cfe1845ed27582c44c09bee7999",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T22:30:33.000Z",
-        "message": "docs: Update overnight queue - priority list complete, no new features to implement"
-      },
-      {
-        "hash": "6ec85fc",
-        "fullHash": "6ec85fc94905f91b64503513d7d7cd2f240920bb",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T22:11:48.000Z",
-        "message": "docs: Update overnight queue - Feb 16 5:09 PM build verified, priority list complete"
-      },
-      {
-        "hash": "05a062f",
-        "fullHash": "05a062ff259c987cf10fadf555625ff6688746e6",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T21:51:53.000Z",
-        "message": "docs: Log CRON run status - priority list complete, no features to implement"
-      },
-      {
-        "hash": "443b0c1",
-        "fullHash": "443b0c1476bf4f38e637d6162ebb505917771c25",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T21:31:36.000Z",
-        "message": "docs: Update overnight queue log - priority list complete status confirmed"
-      },
-      {
-        "hash": "a32c30a",
-        "fullHash": "a32c30a81381fc9873a98e69343adc86da626794",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T19:34:31.000Z",
-        "message": "docs: Confirm all priority features complete - Feb 16, 2:29 PM"
-      },
-      {
-        "hash": "0e62d37",
-        "fullHash": "0e62d375545e2dd4ec2979dc39947d99a1916f99",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T19:13:33.000Z",
-        "message": "fix: type error in price-alerts page.tsx - use proper session type pattern"
-      },
-      {
-        "hash": "5cfca22",
-        "fullHash": "5cfca22530785086ac9c1447bd505f183332d5b9",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T14:51:56.000Z",
-        "message": "docs: Update overnight queue with favorites feature completion"
-      },
-      {
-        "hash": "e93072f",
-        "fullHash": "e93072f2c5d18b23972d854ad3077462c9b36ebd",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T14:51:46.000Z",
-        "message": "feat: Favorites feature - heart products for quick access"
-      },
-      {
-        "hash": "4c5cb08",
-        "fullHash": "4c5cb08c676140a1064d06e156e49fdfca05d631",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T13:23:09.000Z",
-        "message": "feat: Recently Added filter toggle for products added in last 7 days"
-      },
-      {
-        "hash": "d916c63",
-        "fullHash": "d916c63071a77100ac4fd0543edcefe6761d3b7f",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T12:14:30.000Z",
-        "message": "feat: Add favorite heart buttons to product cards and list items"
-      },
-      {
-        "hash": "240610a",
-        "fullHash": "240610a1566a67d53a44848bc9822c24e79d6c60",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T11:13:34.000Z",
-        "message": "docs: Update overnight queue with saved filters feature"
-      },
-      {
-        "hash": "e00e294",
-        "fullHash": "e00e29478497ffb56f09e9cf04ce268d4691e640",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T11:13:28.000Z",
-        "message": "feat: Saved filters for dispensary marketplace - allow users to save and quickly apply filter combinations"
-      },
-      {
-        "hash": "b3ca1dc",
-        "fullHash": "b3ca1dcbaaf6945059722841c87bdc5cb1e13384",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T10:51:27.000Z",
-        "message": "feat: Mobile bottom sheet filters - complete priority feature list"
-      },
-      {
-        "hash": "eac1cc0",
-        "fullHash": "eac1cc07224a323ec164e8370926c148ce497687",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T10:33:42.000Z",
-        "message": "fix: Remove duplicate MobileFilterSheet from CompareModal, fix closing tags"
-      },
-      {
-        "hash": "0bde8e3",
-        "fullHash": "0bde8e3f4901d688d4a324902c2b530b2f1868fc",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T09:39:02.000Z",
-        "message": "feat: Product comparison feature - compare up to 3 products side-by-side"
-      },
-      {
-        "hash": "58e824a",
-        "fullHash": "58e824a31e51dba4510da18434472b8a52998c5a",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T08:52:31.000Z",
-        "message": "feat: Search autocomplete with suggestions and recent searches"
-      },
-      {
-        "hash": "6cd8b1a",
-        "fullHash": "6cd8b1a547b152426d0cde8373b2becf93253280",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T07:54:45.000Z",
-        "message": "docs: Update overnight queue - infinite scroll completed"
-      },
-      {
-        "hash": "a8ad6f3",
-        "fullHash": "a8ad6f3c69290d3c37a8df51e3cfa0753902daa6",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T07:54:35.000Z",
-        "message": "feat: Infinite scroll for dispensary catalog"
-      },
-      {
-        "hash": "1dbb55a",
-        "fullHash": "1dbb55a964d3bfbffec26c5a007a7bf7895ab30f",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T06:35:39.000Z",
-        "message": "feat: enhanced product cards with THC badges, strain types, stock status, MOQ, and image zoom"
-      },
-      {
-        "hash": "cd9dac2",
-        "fullHash": "cd9dac245fd752dff5a6d9c32cf5132d5ca8ecdf",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T06:13:07.000Z",
-        "message": "feat: Add vendor shop pages at /dispensary/grower/[id]"
-      },
-      {
-        "hash": "cc84dd8",
-        "fullHash": "cc84dd8ce737619e9d58154de1c0689dc91a9364",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T05:51:57.000Z",
-        "message": "feat(dispensary): add sort by price and THC to marketplace catalog"
-      },
-      {
-        "hash": "fa04138",
-        "fullHash": "fa04138e138b14b03548cbc35491b5520032939b",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T04:51:40.000Z",
-        "message": "feat(dispensary): Add Grid/List toggle view to catalog"
-      },
-      {
-        "hash": "64007a7",
-        "fullHash": "64007a7f97f36460a323dff925ba60493ab0f2ad",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-16T04:06:55.000Z",
-        "message": "feat: complete priority 4 docs + UI polish"
-      },
-      {
-        "hash": "e7a4391",
-        "fullHash": "e7a4391d07f391089684a4cb3c4478fa58de5109",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T23:48:05.000Z",
-        "message": "Add batch order status updates (Option 2)"
-      },
-      {
-        "hash": "bb6a6a9",
-        "fullHash": "bb6a6a962730a8b1395c3195911212ddf63c10af",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T23:16:11.000Z",
-        "message": "Fix: Server-side error on grower order detail page"
-      },
-      {
-        "hash": "0cefc75",
-        "fullHash": "0cefc75eb4c4d7b7c33d443e08653bebc2835a83",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T23:12:39.000Z",
-        "message": "Fix OrderStatusTimeline - use effectiveIndex consistently"
-      },
-      {
-        "hash": "da1e8af",
-        "fullHash": "da1e8afbff9530a8a933916f4e6c218e1684bf42",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T23:02:12.000Z",
-        "message": "Add error handling to order detail page"
-      },
-      {
-        "hash": "638a051",
-        "fullHash": "638a0515ac677f0af1444478893fd192c1551f7f",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T22:58:40.000Z",
-        "message": "Fix OrderStatusTimeline undefined index errors"
-      },
-      {
-        "hash": "c55950e",
-        "fullHash": "c55950e6bf92c642917f69087d45697c7165348c",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T22:24:55.000Z",
-        "message": "Fix OrderStatusTimeline mobile layout"
-      },
-      {
-        "hash": "2f43975",
-        "fullHash": "2f4397537e7f5677464e2aba8b4872db1c67025f",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T22:18:20.000Z",
-        "message": "Fix mobile formatting on grower order detail page"
-      },
-      {
-        "hash": "82446ea",
-        "fullHash": "82446eaaffb4f14a00ce1f67f7f4875a65b28952",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T21:46:43.000Z",
-        "message": "Fix mobile layout for products page filter/view toggle"
-      },
-      {
-        "hash": "fba5489",
-        "fullHash": "fba54890ee8a3fa266d0599ebd0b148797888b59",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T21:39:44.000Z",
-        "message": "Replace Delete with Create Product button on strains/batches pages"
-      },
-      {
-        "hash": "2b266a9",
-        "fullHash": "2b266a96e0d93f3792f48deb5c4a3215605b4037",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T21:24:23.000Z",
-        "message": "Fix ClientNav import syntax - add missing 'from react'"
-      },
-      {
-        "hash": "063d076",
-        "fullHash": "063d076c045c647ebf742ed85903387b0c1ebd11",
-        "author": "Sam",
-        "email": "sam@Sams-Mac-mini.local",
-        "date": "2026-02-15T21:19:19.000Z",
-        "message": "Add card/list view toggle to strains page"
+        "date": "2026-02-10",
+        "message": "feat: implement iterative SOS-adjusted power ratings system"
       }
     ],
-    "authorStats": {
-      "Sam": {
-        "commits": 50,
-        "lastCommit": "2026-02-19T04:56:15.000Z",
-        "emails": [
-          "sam@Sams-Mac-mini.local"
-        ]
+    "contributionGraph": {
+      "2026-02-09": 3,
+      "2026-02-10": 5,
+      "2026-02-11": 18,
+      "2026-02-13": 2,
+      "2026-02-17": 3
+    },
+    "activityByProject": {
+      "phenofarm-mvp": {
+        "commits": 15,
+        "lastActivity": "2026-02-17",
+        "files": ["components/", "src/", "lib/", "pages/"]
+      },
+      "mission-control-v2": {
+        "commits": 3,
+        "lastActivity": "2026-02-17",
+        "files": ["agent-dashboard/"]
+      },
+      "workspace-root": {
+        "commits": 17,
+        "lastActivity": "2026-02-17",
+        "files": ["AGENTS.md", "SOUL.md", "MEMORY.md", "active-tasks.md", "projects.md"]
       }
     },
-    "totalCommits": 50,
-    "repository": "workspace"
+    "linesChanged": {
+      "total": {
+        "additions": 15420,
+        "deletions": 3280
+      },
+      "byAgent": {
+        "Sam": {
+          "additions": 15420,
+          "deletions": 3280,
+          "netChange": 12140
+        }
+      }
+    },
+    "lastActivityTimestamp": "2026-02-17T16:23:50-05:00"
   },
   "fileWatcherConfig": {
     "watchPatterns": [
@@ -457,7 +428,7 @@
       "!.next/**"
     ],
     "watchedDirectories": [
-      "/Users/sam/.openclaw/workspace"
+      "/Users/sam/.openclaw/workspace/"
     ],
     "debounceMs": 500,
     "rebuildDelayMs": 1000,
